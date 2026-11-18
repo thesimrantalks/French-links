@@ -159,6 +159,8 @@
         font-size: .92rem; color: var(--ink); line-height: 1.55; white-space: pre-line;
       }
       .msgsend-hint { display: block; font-size: .85rem; color: var(--ink-soft); margin-top: 8px; }
+      .srcrow { margin-top: 14px; }
+      .src-label { display: block; font-size: .85rem; font-weight: 800; color: var(--ink-soft); margin-bottom: 6px; }
       .msgsample-label { display: block; font-size: .8rem; font-weight: 800; color: var(--ink-soft); margin-top: 8px; }
       .msgsample {
         display: block; margin-top: 4px; background: var(--wa-soft);
@@ -260,6 +262,15 @@
           <button type="button" class="chip" data-goal="tcf" aria-pressed="false">TCF Canada / PR</button>
           <button type="button" class="chip" data-goal="unsure" aria-pressed="false">Not sure yet</button>
         </div>
+        <div class="srcrow">
+          <span class="src-label">Where did you find me?</span>
+          <div class="chips" role="group" aria-label="Where did you find me">
+            <button type="button" class="chip src" data-src="instagram" aria-pressed="true">Instagram</button>
+            <button type="button" class="chip src" data-src="tiktok" aria-pressed="false">TikTok</button>
+            <button type="button" class="chip src" data-src="facebook" aria-pressed="false">Facebook</button>
+            <button type="button" class="chip src" data-src="other" aria-pressed="false">Somewhere else</button>
+          </div>
+        </div>
         <div class="msgsend">
           <span class="msgsend-label">This is the message you'll send on WhatsApp:</span>
           <div class="msgbubble" id="msgPreview"></div>
@@ -300,7 +311,7 @@
             <span class="t">Request a Demo Class</span>
             <span class="d">Try one live class before you join a batch. Tap to message me on WhatsApp — I'll arrange a time with you.</span>
             <span class="msgsample-label">You'll send:</span>
-            <span class="msgsample">Hi Simran! I found you on Instagram (@thesimrantalks). I'd like to request a demo class.
+            <span class="msgsample" id="demoPreview">Hi Simran! I found you on Instagram (@thesimrantalks). I'd like to request a demo class.
 Name:
 My level:
 Referred by:
@@ -367,43 +378,54 @@ Two times that work for me (Toronto time):</span>
         var WA = "https://wa.me/" + ["1437", "637", "0140"].join("");
         function waLink(text) { return WA + "?text=" + encodeURIComponent(text); }
 
-        var goals = {
-          beginner: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nMy level: Complete beginner\nReferred by: \nAnything else: "
-          },
-          a1a2: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nMy level: A1 / A2\nReferred by: \nAnything else: "
-          },
-          b1b2: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nMy level: B1 / B2\nReferred by: \nAnything else: "
-          },
-          tcf: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nMy level: TCF Canada / PR\nReferred by: \nAnything else: "
-          },
-          unsure: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nMy level: Not sure yet\nReferred by: \nAnything else: "
-          }
+        var sources = {
+          instagram: "Instagram (@thesimrantalks)",
+          tiktok: "TikTok (@thesimrantalks)",
+          facebook: "Facebook",
+          other: "online"
         };
+        var levels = {
+          beginner: "Complete beginner",
+          a1a2: "A1 / A2",
+          b1b2: "B1 / B2",
+          tcf: "TCF Canada / PR",
+          unsure: "Not sure yet"
+        };
+        var currentSource = "instagram";
+        var currentLevel = "beginner";
 
         var counselBtn = document.getElementById("waCounsel");
+        var demoBtn = document.getElementById("waDemo");
         var preview = document.getElementById("msgPreview");
-        var chips = document.querySelectorAll(".chip");
+        var demoPreview = document.getElementById("demoPreview");
+        var levelChips = document.querySelectorAll(".chip[data-goal]");
+        var srcChips = document.querySelectorAll(".chip[data-src]");
 
-        function setGoal(key) {
-          counselBtn.href = waLink(goals[key].msg);
-          preview.textContent = goals[key].msg;
-          chips.forEach(function (c) {
-            c.setAttribute("aria-pressed", c.getAttribute("data-goal") === key ? "true" : "false");
+        function counselMsg() {
+          return "Hi Simran! I found you on " + sources[currentSource] + ". I'd like free counselling.\nName: \nMy level: " + levels[currentLevel] + "\nReferred by: \nAnything else: ";
+        }
+        function demoMsg() {
+          return "Hi Simran! I found you on " + sources[currentSource] + ". I'd like to request a demo class.\nName: \nMy level: \nReferred by: \nTwo times that work for me (Toronto time): ";
+        }
+        function refresh() {
+          counselBtn.href = waLink(counselMsg());
+          preview.textContent = counselMsg();
+          demoBtn.href = waLink(demoMsg());
+          demoPreview.textContent = demoMsg();
+          levelChips.forEach(function (c) {
+            c.setAttribute("aria-pressed", c.getAttribute("data-goal") === currentLevel ? "true" : "false");
+          });
+          srcChips.forEach(function (c) {
+            c.setAttribute("aria-pressed", c.getAttribute("data-src") === currentSource ? "true" : "false");
           });
         }
-        chips.forEach(function (c) {
-          c.addEventListener("click", function () { setGoal(c.getAttribute("data-goal")); });
+        levelChips.forEach(function (c) {
+          c.addEventListener("click", function () { currentLevel = c.getAttribute("data-goal"); refresh(); });
         });
-        setGoal("beginner");
-
-        document.getElementById("waDemo").href = waLink(
-          "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like to request a demo class.\nName: \nMy level: \nReferred by: \nTwo times that work for me (Toronto time): "
-        );
+        srcChips.forEach(function (c) {
+          c.addEventListener("click", function () { currentSource = c.getAttribute("data-src"); refresh(); });
+        });
+        refresh();
       })();
     </script>
   </body>
