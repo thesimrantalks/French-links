@@ -252,11 +252,12 @@
       <!-- Goal picker -->
       <div class="goalbox">
         <span class="script">start here — it's free</span>
-        <h2>What are you learning French for?</h2>
+        <h2>What&apos;s your current level?</h2>
         <div class="chips" role="group" aria-label="Choose your goal">
-          <button type="button" class="chip" data-goal="tcf" aria-pressed="true">TCF Canada / PR</button>
-          <button type="button" class="chip" data-goal="beginner" aria-pressed="false">Complete beginner</button>
-          <button type="button" class="chip" data-goal="speaking" aria-pressed="false">Better speaking</button>
+          <button type="button" class="chip" data-goal="beginner" aria-pressed="true">Complete beginner</button>
+          <button type="button" class="chip" data-goal="a1a2" aria-pressed="false">A1 / A2</button>
+          <button type="button" class="chip" data-goal="b1b2" aria-pressed="false">B1 / B2</button>
+          <button type="button" class="chip" data-goal="tcf" aria-pressed="false">TCF Canada / PR</button>
           <button type="button" class="chip" data-goal="unsure" aria-pressed="false">Not sure yet</button>
         </div>
         <div class="msgsend">
@@ -367,17 +368,20 @@ Two times that work for me (Toronto time):</span>
         function waLink(text) { return WA + "?text=" + encodeURIComponent(text); }
 
         var goals = {
-          tcf: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: TCF Canada / PR\nCurrent level: \nReferred by: \nAnything else: "
-          },
           beginner: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Complete beginner\nReferred by: \nAnything else: "
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nMy level: Complete beginner\nReferred by: \nAnything else: "
           },
-          speaking: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Better speaking\nCurrent level: \nReferred by: \nAnything else: "
+          a1a2: {
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nMy level: A1 / A2\nReferred by: \nAnything else: "
+          },
+          b1b2: {
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nMy level: B1 / B2\nReferred by: \nAnything else: "
+          },
+          tcf: {
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nMy level: TCF Canada / PR\nReferred by: \nAnything else: "
           },
           unsure: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Not sure yet\nCurrent level: \nReferred by: \nAnything else: "
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nMy level: Not sure yet\nReferred by: \nAnything else: "
           }
         };
 
@@ -395,7 +399,7 @@ Two times that work for me (Toronto time):</span>
         chips.forEach(function (c) {
           c.addEventListener("click", function () { setGoal(c.getAttribute("data-goal")); });
         });
-        setGoal("tcf");
+        setGoal("beginner");
 
         document.getElementById("waDemo").href = waLink(
           "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like to request a demo class.\nName: \nMy level: \nReferred by: \nTwo times that work for me (Toronto time): "
