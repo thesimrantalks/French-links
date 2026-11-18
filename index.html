@@ -151,9 +151,19 @@
       .chip:focus-visible, a.linkcard:focus-visible, button:focus-visible, summary:focus-visible {
         outline: 3px solid var(--blue); outline-offset: 2px;
       }
-      .preview {
-        margin: 12px 0 0; font-size: .92rem; color: var(--ink-soft);
-        background: var(--wa-soft); border-radius: 12px; padding: 10px 12px;
+      .msgsend { margin: 12px 0 0; }
+      .msgsend-label { display: block; font-size: .85rem; font-weight: 800; color: var(--ink-soft); margin-bottom: 6px; }
+      .msgbubble {
+        background: var(--wa-soft); border: 1px solid var(--line);
+        border-radius: 12px; padding: 10px 12px;
+        font-size: .92rem; color: var(--ink); line-height: 1.55; white-space: pre-line;
+      }
+      .msgsend-hint { display: block; font-size: .85rem; color: var(--ink-soft); margin-top: 8px; }
+      .msgsample-label { display: block; font-size: .8rem; font-weight: 800; color: var(--ink-soft); margin-top: 8px; }
+      .msgsample {
+        display: block; margin-top: 4px; background: var(--wa-soft);
+        border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px;
+        font-size: .85rem; color: var(--ink); line-height: 1.5; white-space: pre-line; font-weight: 600;
       }
       .preview strong { color: var(--ink); }
 
@@ -249,7 +259,11 @@
           <button type="button" class="chip" data-goal="speaking" aria-pressed="false">Better speaking</button>
           <button type="button" class="chip" data-goal="unsure" aria-pressed="false">Not sure yet</button>
         </div>
-        <p class="preview" id="msgPreview">Your WhatsApp message is already written for you — just tap the green button below and press send. <strong>No number to copy, nothing to type.</strong></p>
+        <div class="msgsend">
+          <span class="msgsend-label">This is the message you'll send on WhatsApp:</span>
+          <div class="msgbubble" id="msgPreview"></div>
+          <span class="msgsend-hint">Fill in the blanks, then tap the green button below and press send. No number to copy.</span>
+        </div>
       </div>
 
       <!-- Links -->
@@ -284,6 +298,12 @@
           <span class="txt">
             <span class="t">Request a Demo Class</span>
             <span class="d">Try one live class before you join a batch. Tap to message me on WhatsApp — I'll arrange a time with you.</span>
+            <span class="msgsample-label">You'll send:</span>
+            <span class="msgsample">Hi Simran! I found you on Instagram (@thesimrantalks). I'd like to request a demo class.
+Name:
+My level:
+Referred by:
+Two times that work for me (Toronto time):</span>
           </span>
           <span class="arrow" aria-hidden="true">→</span>
         </a>
@@ -348,20 +368,16 @@
 
         var goals = {
           tcf: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: TCF Canada / PR\nCurrent level: \nReferred by: \nAnything else: ",
-            preview: "Goal set: <strong>TCF Canada / PR</strong>. Your WhatsApp message is ready with your goal in it — just fill in your name, current level, who referred you, and anything else, then tap the green button below and press send."
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: TCF Canada / PR\nCurrent level: \nReferred by: \nAnything else: "
           },
           beginner: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Complete beginner\nReferred by: \nAnything else: ",
-            preview: "Goal set: <strong>Complete beginner</strong>. Your WhatsApp message is ready — just fill in your name, who referred you, and anything else, then tap the green button below and press send."
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Complete beginner\nReferred by: \nAnything else: "
           },
           speaking: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Better speaking\nCurrent level: \nReferred by: \nAnything else: ",
-            preview: "Goal set: <strong>Better speaking</strong>. Your WhatsApp message is ready with your goal in it — just fill in your name, current level, who referred you, and anything else, then tap the green button below and press send."
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Better speaking\nCurrent level: \nReferred by: \nAnything else: "
           },
           unsure: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Not sure yet\nCurrent level: \nReferred by: \nAnything else: ",
-            preview: "Goal set: <strong>Not sure yet</strong>. Your WhatsApp message is ready — just fill in your name, current level, who referred you, and anything else, then tap the green button below and press send."
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Not sure yet\nCurrent level: \nReferred by: \nAnything else: "
           }
         };
 
@@ -371,7 +387,7 @@
 
         function setGoal(key) {
           counselBtn.href = waLink(goals[key].msg);
-          preview.innerHTML = goals[key].preview;
+          preview.textContent = goals[key].msg;
           chips.forEach(function (c) {
             c.setAttribute("aria-pressed", c.getAttribute("data-goal") === key ? "true" : "false");
           });
