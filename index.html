@@ -348,20 +348,20 @@
 
         var goals = {
           tcf: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling — my goal is TCF Canada. My current level is: ",
-            preview: "Goal set: <strong>TCF Canada / PR</strong> — your counselling message mentions it, so Simran can guide you on batches and exam prep straight away."
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: TCF Canada / PR\nCurrent level: \nReferred by: \nAnything else: ",
+            preview: "Goal set: <strong>TCF Canada / PR</strong>. Your WhatsApp message is ready with your goal in it — just fill in your name, current level, who referred you, and anything else, then tap the green button below and press send."
           },
           beginner: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling — I'm a complete beginner and want to start learning French. ",
-            preview: "Goal set: <strong>Complete beginner</strong> — your counselling message says you're starting from zero, so Simran can point you to the right A1 batch."
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Complete beginner\nReferred by: \nAnything else: ",
+            preview: "Goal set: <strong>Complete beginner</strong>. Your WhatsApp message is ready — just fill in your name, who referred you, and anything else, then tap the green button below and press send."
           },
           speaking: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling — I want to improve my French speaking. My current level is: ",
-            preview: "Goal set: <strong>Better speaking</strong> — your counselling message mentions speaking, so Simran can suggest the right batch and practice plan."
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Better speaking\nCurrent level: \nReferred by: \nAnything else: ",
+            preview: "Goal set: <strong>Better speaking</strong>. Your WhatsApp message is ready with your goal in it — just fill in your name, current level, who referred you, and anything else, then tap the green button below and press send."
           },
           unsure: {
-            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling — I'm not sure which level or batch is right for me. ",
-            preview: "Goal set: <strong>Not sure yet</strong> — no problem. Your counselling message says exactly that, and Simran will help you figure out your level."
+            msg: "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like free counselling.\nName: \nGoal: Not sure yet\nCurrent level: \nReferred by: \nAnything else: ",
+            preview: "Goal set: <strong>Not sure yet</strong>. Your WhatsApp message is ready — just fill in your name, current level, who referred you, and anything else, then tap the green button below and press send."
           }
         };
 
@@ -371,7 +371,7 @@
 
         function setGoal(key) {
           counselBtn.href = waLink(goals[key].msg);
-          preview.innerHTML = goals[key].preview + " Just tap the green button below and press send — <strong>nothing to type, no number to copy.</strong>";
+          preview.innerHTML = goals[key].preview;
           chips.forEach(function (c) {
             c.setAttribute("aria-pressed", c.getAttribute("data-goal") === key ? "true" : "false");
           });
@@ -382,7 +382,7 @@
         setGoal("tcf");
 
         document.getElementById("waDemo").href = waLink(
-          "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like to request a demo class. My level is: ___. Two times that work for me (Toronto time): ___"
+          "Hi Simran! I found you on Instagram (@thesimrantalks). I'd like to request a demo class.\nName: \nMy level: \nReferred by: \nTwo times that work for me (Toronto time): "
         );
       })();
     </script>
